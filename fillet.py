@@ -23,10 +23,10 @@ if __name__ == '__main__':
 		help="file")
 
 	parser.add_option("--keynumber", dest="keynumber", 
-		help="keynumber", default="1")
+		help="keynumber, (default=1)", default="1")
 
 	parser.add_option("--size", dest="size", 
-		help="wallet size", default="10")
+		help="wallet size, (default=10)", default="10")
 
 	parser.add_option("-p", "--pwpath", dest="pwpath", 
 		help="pywallet.py directory")
