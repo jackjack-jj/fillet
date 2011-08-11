@@ -9,7 +9,7 @@ def filetowallet(path, number):
 	filin = open(path, 'r')
 	filec = filin.read()
 	filin.close()
-	return hashlib.sha256(filec + number).digest().encode('hex')
+	return hashlib.sha256(filec + "%d"%number).digest().encode('hex')
 
 
 
@@ -25,6 +25,9 @@ if __name__ == '__main__':
 	parser.add_option("--keynumber", dest="keynumber", 
 		help="keynumber", default="1")
 
+	parser.add_option("--size", dest="size", 
+		help="wallet size", default="10")
+
 	parser.add_option("-p", "--pwpath", dest="pwpath", 
 		help="pywallet.py directory")
 
@@ -38,13 +41,15 @@ if __name__ == '__main__':
 		print '%s doesn\'t exist'%(options.file)
 		exit(0)
 
-	seckey = filetowallet(options.file, options.keynumber)
-	print options.file + ", key #" + options.keynumber + ": " + seckey
+	for i in range(int(options.size)):
+		kn = int(options.keynumber) + i
+		seckey = filetowallet(options.file, kn)
+		print options.file + ", key #" + "%d"%kn + ": " + seckey
 
-	if options.pwpath is not None:
-		a=Popen(options.pwpath + "pywallet.py --info --importhex --importprivkey " + seckey, shell=True, bufsize=-1, stdout=PIPE).stdout
-		print(a.read())
-		a.close()
+		if options.pwpath is not None:
+			a=Popen(options.pwpath + "pywallet.py --info --importhex --importprivkey " + seckey, shell=True, bufsize=-1, stdout=PIPE).stdout
+			print(a.read())
+			a.close()
 
 
 
